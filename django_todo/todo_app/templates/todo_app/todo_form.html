@@ -1,0 +1,36 @@
+{% extends 'todo_app/base.html' %}
+
+{% block title %}{% if form.instance.pk %}Edit Todo{% else %}Add Todo{% endif %}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h3>{% if form.instance.pk %}Edit Todo{% else %}Add Todo{% endif %}</h3>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="{{ form.title.id_for_label }}">Title</label>
+                        {{ form.title.errors }}
+                        <input type="text" name="{{ form.title.name }}" id="{{ form.title.id_for_label }}" class="form-control" value="{{ form.title.value|default:'' }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.description.id_for_label }}">Description</label>
+                        {{ form.description.errors }}
+                        <textarea name="{{ form.description.name }}" id="{{ form.description.id_for_label }}" class="form-control" rows="4">{{ form.description.value|default:'' }}</textarea>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input type="checkbox" name="{{ form.completed.name }}" id="{{ form.completed.id_for_label }}" class="form-check-input" {% if form.completed.value %}checked{% endif %}>
+                        <label class="form-check-label" for="{{ form.completed.id_for_label }}">Completed</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <a href="{% url 'todo_list' %}" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
